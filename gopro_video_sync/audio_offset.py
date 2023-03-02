@@ -30,8 +30,9 @@ def get_audio_offset(
     Given the sample rate and data from two WAV streams, determines the offset
     of `wav_2` from `wav_1` using cross-correlation.
 
-    Returns the offset of `wav_2` from `wav_1` in milliseconds (positive
-    means `wav_2` is behind, negative means it's ahead).
+    Returns the offset in seconds that would have to be added to the beginning
+    of `wav_2` for it to line up with `wav_1` (or vice versa for a negative
+    value).
     """
 
     sample_rate_1, data_1 = wav_1

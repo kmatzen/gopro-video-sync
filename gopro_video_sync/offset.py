@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Optional, Tuple
 
 from .audio_offset import get_audio_offset, get_wav_data
-from .gopro_accel_gyro import get_gopro_accel_gyro
+from .gopro_data import get_gopro_accel_gyro
 from .sensor_offset import get_sensor_offset
 
 

@@ -1,2 +1,5 @@
-*__pycache__
-.vscode
+*__pycache__/
+.vscode/
+dist/
+gopro_video_sync.egg-info/
+build/

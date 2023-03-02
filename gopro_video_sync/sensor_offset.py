@@ -1,8 +1,7 @@
 import numpy as np
-from scipy.signal import correlate
 
 from .cross_correlation import get_offset
-from .gopro_accel_gyro import Sensor3AxisStream
+from .gopro_data import Sensor3AxisStream
 
 
 def regularize_stream_timescale(
@@ -50,8 +49,9 @@ def get_sensor_offset(
     Given 2 sensor streams, determines the offset of `stream_2` from `stream_1`
     using cross-correlation.
 
-    Returns the offset of `stream_2` from `stream_1` in milliseconds (positive
-    means `stream_2` is behind, negative means it's ahead).
+    Returns the offset in seconds that would have to be added to the beginning
+    of `stream_2` for it to line up with `stream_1` (or vice versa for a
+    negative value).
     """
 
     array1 = np.array(stream_1.data)
