@@ -17,6 +17,8 @@ def get_wav_data(video: str, sample_rate=8000) -> Tuple[int, np.ndarray]:
     clip = VideoFileClip(video)
     with TemporaryDirectory() as temp_folder:
         wav_filepath = join(temp_folder, "audio.wav")
+        if clip.audio is None:
+            raise ValueError("Video does not contain audio data.")
         clip.audio.write_audiofile(
             wav_filepath, codec="pcm_s16le", logger=None, fps=sample_rate
         )

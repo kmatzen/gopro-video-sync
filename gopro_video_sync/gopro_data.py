@@ -219,6 +219,10 @@ def get_3axis_sensor_data(
     for sample in samples:
         # Finds the top-level "strm" box for the sensor data stream
         strm = None
+        try:
+            strm_boxes = get_gpmf_boxes(f, sample.offset, sample.size, ["DEVC", "STRM"])
+        except:
+            raise ValueError(f"Error parsing GPMF payload; may be corrupted.")
         strm_boxes = get_gpmf_boxes(f, sample.offset, sample.size, ["DEVC", "STRM"])
         for box in strm_boxes:
             if get_gpmf_boxes(f, box.offset, box.size, ["STRM", sensor_key]):

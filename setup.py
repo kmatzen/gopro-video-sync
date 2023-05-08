@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name="gopro-video-sync",
     packages=["gopro_video_sync"],
-    version="0.0.1",
+    version="0.0.3",
     author="Ethan Voth",
     author_email="ethanvoth7@gmail.com",
     url="https://github.com/evoth/gopro-video-sync",
