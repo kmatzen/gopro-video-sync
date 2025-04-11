@@ -43,7 +43,7 @@ def regularize_stream_timescale(
 
 
 def get_sensor_offset(
-    stream_1: Sensor3AxisStream, stream_2: Sensor3AxisStream
+    stream_1: Sensor3AxisStream, stream_2: Sensor3AxisStream, use_magnitude: bool = True
 ) -> float:
     """
     Given 2 sensor streams, determines the offset of `stream_2` from `stream_1`
@@ -57,9 +57,13 @@ def get_sensor_offset(
     array1 = np.array(stream_1.data)
     array2 = np.array(regularize_stream_timescale(stream_1, stream_2).data)
 
-    magnitudes_1 = (array1 * array1).sum(axis=1)
-    magnitudes_2 = (array2 * array2).sum(axis=1)
+    if use_magnitude:
+        magnitudes_1 = (array1 * array1).sum(axis=1)
+        magnitudes_2 = (array2 * array2).sum(axis=1)
+
+        array1 = magnitudes_1
+        array2 = magnitudes_2
 
     return get_offset(
-        magnitudes_1, magnitudes_2, stream_1.sample_count / stream_1.duration * 1000
+        array1, array2, stream_1.sample_count / stream_1.duration * 1000
     )

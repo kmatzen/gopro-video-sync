@@ -14,7 +14,7 @@ class OffsetSource(Enum):
 
 
 def gopro_offset(
-    video_1: str, video_2: str, agree_threshold=0.03
+    video_1: str, video_2: str, agree_threshold=0.03, use_magnitude: bool = True
 ) -> Tuple[Optional[float], OffsetSource, OffsetSource]:
     """
     Given the paths to two GoPro video files, compares accelerometer, gyroscope,
@@ -28,6 +28,12 @@ def gopro_offset(
     sensor is used. In each case, a sensor will be the "primary source" and the
     agreeing source will be the "secondary source".
 
+    By default, this algorithm doesn't make any assumptions about the relative
+    orientation of the two videos and thus will use the magnitude of the sensor
+    data to determine the offset. If `use_magnitude` is set to False, then the
+    algorithm will use the raw sensor data, which may be more accurate if the
+    two videos are in the same orientation.
+
     Returns (offset, primary source, secondary source) where offset is the
     offset in seconds and the primary and secondary sources are OffsetSource
     enums. If no sources agree, then the offset will be None and both
@@ -37,8 +43,8 @@ def gopro_offset(
     accel_1, gyro_1 = get_gopro_accel_gyro(video_1)
     accel_2, gyro_2 = get_gopro_accel_gyro(video_2)
 
-    accel_offset = get_sensor_offset(accel_1, accel_2)
-    gyro_offset = get_sensor_offset(gyro_1, gyro_2)
+    accel_offset = get_sensor_offset(accel_1, accel_2, use_magnitude=use_magnitude)
+    gyro_offset = get_sensor_offset(gyro_1, gyro_2, use_magnitude=use_magnitude)
 
     if abs(accel_offset - gyro_offset) <= agree_threshold:
         return (gyro_offset, OffsetSource.GYROSCOPE, OffsetSource.ACCELEROMETER)

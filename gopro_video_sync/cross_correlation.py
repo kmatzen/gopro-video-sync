@@ -15,12 +15,12 @@ def get_offset(data_1: np.ndarray, data_2: np.ndarray, sample_rate: int) -> floa
     """
 
     # Pad with median so that we get clearer results than padding with 0
-    median_padding = np.full(data_2.size, np.median(data_1))
+    median_padding = np.tile(np.median(data_1, axis=0, keepdims=True), (data_2.shape[0], 1))
     data_1_padded = np.concatenate((median_padding, data_1, median_padding))
 
     corr = correlate(data_1_padded, data_2, mode="valid")
 
-    shift = np.argmax(corr) - data_2.size
+    shift = np.argmax(corr) - data_2.shape[0]
     offset = shift / sample_rate
 
     return offset
